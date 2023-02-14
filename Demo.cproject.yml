@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Open-CMSIS-Pack/devtools/schemas/projmgr/1.2.0/tools/projmgr/schemas/cproject.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Open-CMSIS-Pack/devtools/schemas/projmgr/1.4.0/tools/projmgr/schemas/cproject.schema.json
 
 project:
   # packs:
@@ -66,7 +66,7 @@ project:
 
   groups:
     - group: Documentation
-      files: 
+      files:
         - file: ./README.md
     - group: main
       files:
@@ -138,12 +138,12 @@ project:
 
     # Board
     - layer: ./Board/IMXRT1050-EVKB/Board.clayer.yml
-      for-type: 
+      for-type:
         - +IP-Stack
         # - +WiFi
     - layer: ./Board/B-U585I-IOT02A/Board.clayer.yml
-      for-type: 
+      for-type:
         - +WiFi
     - layer: ./Board/AVH_MPS3_Corstone-300/Board.clayer.yml
-      for-type: 
+      for-type:
         - +AVH

@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Open-CMSIS-Pack/devtools/schemas/projmgr/1.2.0/tools/projmgr/schemas/csolution.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Open-CMSIS-Pack/devtools/schemas/projmgr/1.4.0/tools/projmgr/schemas/csolution.schema.json
 
 solution:
   packs:
@@ -24,6 +24,14 @@ solution:
 
     - pack: Keil::STM32U5xx_DFP@2.0.0
     - pack: Keil::B-U585I-IOT02A_BSP@1.0.0
+
+  build-types:
+    - type: Debug
+      debug: on
+      optimize: none
+    - type: Release
+      debug: off
+      optimize: balanced
 
   target-types:
     - type: IP-Stack
