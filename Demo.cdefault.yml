@@ -3,42 +3,24 @@
 default:
   compiler: AC6
 
-  build-types:
-    - type: Debug
-      misc:
-        - for-compiler: AC6
-          C:
-            - -Wno-macro-redefined
-            - -Wno-pragma-pack
-            - -Wno-parentheses-equality
-            - -std=c99
-          ASM:
-            - -masm=auto
-          Link:
-            - --entry=Reset_Handler
-        - for-compiler: GCC
-          C:
-            - -Wall
-            - -std=gnu99
-          Link:
-            - --specs=nosys.specs
-            - --entry=Reset_Handler
-    - type: Release
-      misc:
-        - for-compiler: AC6
-          C:
-            - -Wno-macro-redefined
-            - -Wno-pragma-pack
-            - -Wno-parentheses-equality
-            - -std=c99
-          ASM:
-            - -masm=auto
-          Link:
-            - --entry=Reset_Handler
-        - for-compiler: GCC
-          C:
-            - -Wall
-            - -std=gnu99
-          Link:
-            - --specs=nosys.specs
-            - --entry=Reset_Handler
+  misc:
+    - for-compiler: AC6
+      C-CPP:
+        - -Wno-macro-redefined
+        - -Wno-pragma-pack
+        - -Wno-parentheses-equality
+      C:
+        - -std=c99
+      ASM:
+        - -masm=auto
+      Link:
+        - --entry=Reset_Handler
+
+    - for-compiler: GCC
+      C-CPP:
+        - -Wall
+      C:
+        - -std=gnu99
+      Link:
+        - --specs=nosys.specs
+        - --entry=Reset_Handler
