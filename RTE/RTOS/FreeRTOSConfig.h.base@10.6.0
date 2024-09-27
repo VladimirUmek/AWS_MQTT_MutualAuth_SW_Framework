@@ -41,8 +41,6 @@
 
 #if (defined(__ARMCC_VERSION) || defined(__GNUC__) || defined(__ICCARM__))
 #include <stdint.h>
-#include <stdio.h>
-#include <string.h>
 
 #include "RTE_Components.h"
 #include CMSIS_device_header
@@ -53,12 +51,12 @@
 //  <o>Minimal stack size [words] <0-65535>
 //  <i> Stack for idle task and default task stack in words.
 //  <i> Default: 128
-#define configMINIMAL_STACK_SIZE                  ((uint16_t)(90))
+#define configMINIMAL_STACK_SIZE                  ((uint16_t)(128))
 
 //  <o>Total heap size [bytes] <0-0xFFFFFFFF>
 //  <i> Heap memory size in bytes.
 //  <i> Default: 8192
-#define configTOTAL_HEAP_SIZE                     ((size_t)(0xD000))
+#define configTOTAL_HEAP_SIZE                     ((size_t)8192)
 
 //  <o>Kernel tick frequency [Hz] <0-0xFFFFFFFF>
 //  <i> Kernel tick rate in Hz.
@@ -68,7 +66,7 @@
 //  <o>Timer task stack depth [words] <0-65535>
 //  <i> Stack for timer task in words.
 //  <i> Default: 80
-#define configTIMER_TASK_STACK_DEPTH              (256)
+#define configTIMER_TASK_STACK_DEPTH              80
 
 //  <o>Timer task priority <0-56>
 //  <i> Timer task priority.
@@ -78,12 +76,12 @@
 //  <o>Timer queue length <0-1024>
 //  <i> Timer command queue length.
 //  <i> Default: 5
-#define configTIMER_QUEUE_LENGTH                  10
+#define configTIMER_QUEUE_LENGTH                  5
 
 //  <o>Preemption interrupt priority
 //  <i> Maximum priority of interrupts that are safe to call FreeRTOS API.
-//  <i> Default: 16
-#define configMAX_SYSCALL_INTERRUPT_PRIORITY      16
+//  <i> Default: 128
+#define configMAX_SYSCALL_INTERRUPT_PRIORITY      128
 
 //  <q>Use time slicing
 //  <i> Enable setting to use timeslicing.
@@ -112,7 +110,7 @@
 //  <i> Enable callback function call on each idle task iteration.
 //  <i> Callback function vApplicationIdleHook implementation is required when idle hook is enabled.
 //  <i> Default: 0
-#define configUSE_IDLE_HOOK                       1
+#define configUSE_IDLE_HOOK                       0
 
 //  <q>Use tick hook
 //  <i> Enable callback function call during each tick interrupt.
@@ -124,19 +122,19 @@
 //  <i> Enable callback function call when timer service starts.
 //  <i> Callback function vApplicationDaemonTaskStartupHook implementation is required when deamon task startup hook is enabled.
 //  <i> Default: 0
-#define configUSE_DAEMON_TASK_STARTUP_HOOK        1
+#define configUSE_DAEMON_TASK_STARTUP_HOOK        0
 
 //  <q>Use malloc failed hook
 //  <i> Enable callback function call when out of dynamic memory.
 //  <i> Callback function vApplicationMallocFailedHook implementation is required when malloc failed hook is enabled.
 //  <i> Default: 0
-#define configUSE_MALLOC_FAILED_HOOK              1
+#define configUSE_MALLOC_FAILED_HOOK              0
 
 //  <o>Queue registry size
 //  <i> Define maximum number of queue objects registered for debug purposes.
 //  <i> The queue registry is used by kernel aware debuggers to locate queue and semaphore structures and display associated text names.
 //  <i> Default: 0
-#define configQUEUE_REGISTRY_SIZE                 8
+#define configQUEUE_REGISTRY_SIZE                 0
 
 // <h>Event Recorder Configuration
 // <i> Initialize and setup Event Recorder level filtering.
@@ -218,7 +216,7 @@
 //  <i> Global heap buffer must be provided externally when using application allocated heap.
 //  <i> The buffer must be declared as: uint8_t ucHeap[ configTOTAL_HEAP_SIZE ].
 //  <i> Default: 0
-#define configAPPLICATION_ALLOCATED_HEAP          1
+#define configAPPLICATION_ALLOCATED_HEAP          0
 
 //  <q>Use separate heap for stack allocation
 //  <i> Enable or disable stack allocation for any task from a separate heap.
@@ -262,14 +260,14 @@
 //  <i> Enable this setting when FreeRTOS runs on the Secure side only.
 //  <i> This setting is only relevant on ARMv8-M ports.
 //  <i> Default: 0
-#define configRUN_FREERTOS_SECURE_ONLY            1
+#define configRUN_FREERTOS_SECURE_ONLY            0
 
 //  <q>Use TrustZone Security Extension
 //  <i> Using TrustZone affects context handling.
 //  <i> Enable TrustZone when FreeRTOS runs on the Non-Secure side and calls functions from the Secure side.
 //  <i> This setting is only relevant on ARMv8-M ports.
 //  <i> Default: 1
-#define configENABLE_TRUSTZONE                    0
+#define configENABLE_TRUSTZONE                    1
 
 //  <o>Minimal secure stack size [words] <0-65535>
 //  <i> Stack for idle task Secure side context in words.
@@ -383,41 +381,6 @@
   /* Include debug event definitions */
   #include "freertos_evr.h"
   #endif
-#endif
-
-
-/* Logging task definitions. */
-void vLoggingPrintf( const char * pcFormat, ... );
-
-/* Map the FreeRTOS printf() to the logging task printf. */
-#define configPRINTF( x )                       vLoggingPrintf x
-
-/* Map the logging task's printf to the board specific output function. */
-#define configPRINT_STRING( x )                 printf("%s", (x))
-
-/* Sets the length of the buffers into which logging messages are written - so
- * also defines the maximum length of each log message. */
-#define configLOGGING_MAX_MESSAGE_LENGTH        160
-
-/* Prepend each log message with a message number, the task name and a time stamp. */
-#define configLOGGING_INCLUDE_TIME_AND_TASK_NAME 1
-
-/* Define configASSERT to execute BKPT instruction when assert fails */
-#define configASSERT(x)                         do {                             \
-                                                  if ((x) == 0) {                \
-                                                    __BKPT(0);                   \
-                                                  }                              \
-                                                } while(0)
-
-/* The application defines the array used for the FreeRTOS */
-#define configHEAP_REGION0_ADDR                 0
-#define configHEAP_REGION0_SIZE                 configTOTAL_HEAP_SIZE
-
-#ifndef ipTRUE_BOOL
-#define ipTRUE_BOOL                             (1 == 1)
-#endif
-#ifndef ipFALSE_BOOL
-#define ipFALSE_BOOL                            (1 == 2)
 #endif
 
 #endif /* FREERTOS_CONFIG_H */

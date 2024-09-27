@@ -11,11 +11,24 @@ Visit [*coreMQTT mutual authentication demo*](https://docs.aws.amazon.com/freert
 Please note, that [*properly configured thing*](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html) is required to
 successfully run the demo application.
 
-Targets:
+Target Types
 --------
-  - NXP [IMXRT1050-EVKB](./Board/IMXRT1050-EVKB/README.md) Board (`target-type: IP-Stack`, using FreeRTOS+TCP over Ethernet)
-  - STMicroelectronics [B-U585I-IOT02A](./Board/B-U585I-IOT02A/README.md) Board (`target-type: WiFi`, using on-board WiFi module)
-  - [Arm Virtual Hardware for Corstone-300](./Board/AVH_MPS3_Corstone-300/README.md) (`target-type: AVH`, using VSocket)
+Application requires setting of two layers defined by the variables:
+  - Board-Layer
+  - Socket-Layer
+
+To set the board layer (i.e. to specify the "Board-Layer") one shall first install the BSP or DFP for the board in use. To list the name of the available boards use the command
+```
+csolution list board
+```
+This command will also list the respective pack name and version. To continue, follow the instruction on [how to configure the Reference Application](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/ReferenceApplications.md#usage).
+
+To set the socket layer (i.e. to specify the "Socket-Layer:) one shall list the available socket layers by using command
+```
+csolution list layers Demo.csolution.yml --clayer-path ./Socket
+```
+This command will list the socket layer compatible with the board layer specified in a previous step. Listed path shall be used to specify the "Socket-Layer" variable.
+
 
 Configure
 ---------
@@ -37,21 +50,7 @@ Configure WiFi Access Point (when connecting via WiFi):
 Build
 -----
 1. Prerequisites:
-   - [CMSIS-Toolbox 1.4.0](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/releases/tag/1.4.0) or later
-   - Arm Compiler 6.18 or later
-   - CMSIS packs listed in [Demo.csolution.yml](Demo.csolution.yml)  
-     Packs can be installed by executing the following `csolution` and `cpackget` commands:
-     ```
-     csolution list packs -s Demo.csolution.yml -m >packs.txt
-     cpackget add -f packs.txt
-     ```
-
-2. Create `.cprj` project using `csolution`:  
-   `csolution convert -s Demo.csolution.yml -c Demo.<build-type>+<target-type>`  
-     - `<build-type>:  Debug | Release`
-     - `<target-type>: IP-Stack | WiFi | AVH`
-3. Build `.cprj` project using `cbuild`:  
-   `cbuild Demo.<build-type>+<target-type>.cprj`
+   - Arm CMSIS Solution v1.38.0 extension for VS Code
 
 Program
 --------

@@ -1,27 +1,27 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Open-CMSIS-Pack/devtools/schemas/projmgr/1.4.0/tools/projmgr/schemas/cproject.schema.json
-
 project:
-  # packs:
-  #   - pack: ARM::CMSIS
-  #   - pack: ARM::CMSIS-FreeRTOS@10.4.6
-  #   - pack: ARM::mbedTLS@1.7.0
-  #   - pack: AWS::backoffAlgorithm@4.0.0
-  #   - pack: AWS::coreMQTT@4.0.0
-  #   - pack: AWS::coreMQTT_Agent@4.0.0
-  #   - pack: AWS::corePKCS11@4.0.1
-  #   - pack: Arm-Packs::PKCS11
+  packs:
+    - pack: ARM::CMSIS@6.1.0
+    - pack: ARM::CMSIS-FreeRTOS@11.1.0
+    - pack: ARM::CMSIS-Compiler@2.1.1
+    - pack: ARM::CMSIS-View@1.2.0
+    - pack: ARM::mbedTLS@1.7.0
+    - pack: AWS::backoffAlgorithm@4.0.0
+    - pack: AWS::coreMQTT@4.0.0
+    - pack: AWS::coreMQTT_Agent@4.0.0
+    - pack: AWS::corePKCS11@4.0.1
+    - pack: AWS::FreeRTOS-Plus-TCP@4.0.1
+    - pack: Arm-Packs::PKCS11
+    - pack: MDK-Packs::IoT_Socket
 
-  #interfaces:
-  #  provides:
-  #    - FreeRTOS:
-  #    - RTOS2:
-  #  consumes:
-  #    - IoT_Socket:
-  #    - C_VIO:
-  #    - STDOUT:
-  #    - STDIN:
-  #    - STDERR:
-  #    - Heap : 65536
+  connections:
+    - connect: AWS MQTT Mutual Authentication Demo
+      provides:
+        - CMSIS-RTOS2
+        - FreeRTOS
+      consumes:
+        - IoT_Socket
+        - STDOUT
+        - Heap : 65536
 
   add-path:
     - ./config_files
@@ -40,6 +40,7 @@ project:
     - ./amazon-freertos/libraries/freertos_plus/standard/tls/include
 
   components:
+    - component: ARM::CMSIS:OS Tick
     - component: ARM::CMSIS:RTOS2:FreeRTOS&Cortex-M
 
     - component: ARM::RTOS&FreeRTOS:Config&CMSIS RTOS2
@@ -51,7 +52,7 @@ project:
 
     - component: ARM::Security:mbed TLS
       define:
-        - MBEDTLS_CONFIG_FILE="aws_mbedtls_config.h"
+        - MBEDTLS_CONFIG_FILE: \"aws_mbedtls_config.h\"
 
     - component: AWS::FreeRTOS:backoffAlgorithm
     - component: AWS::FreeRTOS:coreMQTT
@@ -62,7 +63,7 @@ project:
     - component: AWS::FreeRTOS:corePKCS11:Utilities
     - component: AWS::Security:PKCS11:corePKCS11
       define:
-        - MBEDTLS_CONFIG_FILE="aws_mbedtls_config.h"
+        - MBEDTLS_CONFIG_FILE: \"aws_mbedtls_config.h\"
 
   groups:
     - group: Documentation
@@ -71,10 +72,13 @@ project:
     - group: main
       files:
         - file: ./app_main.c
+        - file: ./entropy_poll_hw.c
+          define:
+            - MBEDTLS_CONFIG_FILE: \"aws_mbedtls_config.h\"
     - group: config_files
       files:
         - file: ./config_files/aws_demo_config.h
-        - file: ./config_files/aws_iot_network_Config.h
+        - file: ./config_files/aws_iot_network_config.h
         - file: ./config_files/aws_mbedtls_config.h
         - file: ./config_files/core_mqtt_config.h
         - file: ./config_files/core_pkcs11_config.h
@@ -92,7 +96,6 @@ project:
         - file: ./amazon-freertos/demos/include/iot_demo_runner.h
     - group: demos
       files:
-        - file: ./amazon-freertos/demos/demo_runner/aws_demo.c
         - file: ./amazon-freertos/demos/demo_runner/iot_demo_runner.c
         - file: ./amazon-freertos/demos/demo_runner/iot_demo_freertos.c
         - file: ./amazon-freertos/demos/coreMQTT/mqtt_demo_mutual_auth.c
@@ -100,7 +103,7 @@ project:
         - file: ./amazon-freertos/demos/common/pkcs11_helpers/pkcs11_helpers.c
     - group: libraries
       define:
-        - MBEDTLS_CONFIG_FILE="aws_mbedtls_config.h"
+        - MBEDTLS_CONFIG_FILE: \"aws_mbedtls_config.h\"
       files:
         - file: ./amazon-freertos/libraries/c_sdk/standard/common/iot_device_metrics.c
         - file: ./amazon-freertos/libraries/c_sdk/standard/common/iot_init.c
@@ -119,31 +122,9 @@ project:
       files:
         - file: ./amazon-freertos/ports/pkcs11/core_pkcs11_pal.c
 
-  # requires-layers:
-  #   - Socket
-  #   - Security
-  #   - Board
-
   layers:
-    # Socket
-    - layer: ./Socket/FreeRTOS+TCP/Socket.clayer.yml
-      for-type:
-        - +IP-Stack
-    - layer: ./Socket/WiFi/Socket.clayer.yml
-      for-type:
-        - +WiFi
-    - layer: ./Socket/VSocket/Socket.clayer.yml
-      for-type:
-        - +AVH
+    - layer: $Socket-Layer$
+      type: Socket
 
-    # Board
-    - layer: ./Board/IMXRT1050-EVKB/Board.clayer.yml
-      for-type:
-        - +IP-Stack
-        # - +WiFi
-    - layer: ./Board/B-U585I-IOT02A/Board.clayer.yml
-      for-type:
-        - +WiFi
-    - layer: ./Board/AVH_MPS3_Corstone-300/Board.clayer.yml
-      for-type:
-        - +AVH
+    - layer: $Board-Layer$
+      type: Board
