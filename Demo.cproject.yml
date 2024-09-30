@@ -2,7 +2,7 @@ project:
   packs:
     - pack: ARM::CMSIS@6.1.0
     - pack: ARM::CMSIS-FreeRTOS@11.1.0
-    - pack: ARM::CMSIS-Compiler@2.1.1
+    - pack: ARM::CMSIS-Compiler@2.1.0
     - pack: ARM::CMSIS-View@1.2.0
     - pack: ARM::mbedTLS@1.7.0
     - pack: AWS::backoffAlgorithm@4.0.0
