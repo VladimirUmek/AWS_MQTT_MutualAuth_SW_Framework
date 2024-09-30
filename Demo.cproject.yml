@@ -125,8 +125,6 @@ project:
   layers:
     - layer: $Shield-Layer$
       type: Shield
-      for-context:
-        - +MyBoard_w_Shield
 
     - layer: $Socket-Layer$
       type: Socket

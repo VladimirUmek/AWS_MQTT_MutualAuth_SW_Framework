@@ -9,7 +9,7 @@ solution:
 
   compiler: AC6
 
-  packs:
+  #packs:
   #  - pack: <vendor>::<pack>@<version>
 
   build-types:
@@ -21,18 +21,12 @@ solution:
       optimize: balanced
 
   target-types:
-  #  - type: MyBoard
+    - type: MyBoard
   #    board: <board name>
   #    variables:
-  #      - Board-Layer: 
-  #      - Socket-Layer: 
-
-  #  - type: MyBoard_w_Shield
-  #    board: <board name>
-  #    variables:
-  #      - Board-Layer: 
-  #      - Socket-Layer: 
-  #      - Shield-Layer: 
+  #      - Board-Layer: ""
+  #      - Socket-Layer: ""
+  #      - Shield-Layer: ""
 
   ## Select appropriate socket (and shield) layer and then the board layer will be loaded automatically.
 
