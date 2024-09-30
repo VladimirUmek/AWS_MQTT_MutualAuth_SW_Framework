@@ -123,6 +123,11 @@ project:
         - file: ./amazon-freertos/ports/pkcs11/core_pkcs11_pal.c
 
   layers:
+    - layer: $Shield-Layer$
+      type: Shield
+      for-context:
+        - +MyBoard_w_Shield
+
     - layer: $Socket-Layer$
       type: Socket
 
