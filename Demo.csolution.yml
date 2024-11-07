@@ -34,7 +34,7 @@ solution:
   #      - Socket-Layer: $SolutionDir()$/Socket/FreeRTOS+TCP/Socket.clayer.yml
 
   ## Socket Layer using MDK-Middleware Network with CMSIS-Driver Ethernet (for board that provides CMSIS_ETH)
-  #      - Socket-Layer: $SolutionDir()$/Socket/MDK_Netork/Socket.clayer.yml
+  #      - Socket-Layer: $SolutionDir()$/Socket/MDK_Network/Socket.clayer.yml
 
   ## Socket Layer using CMSIS-Driver WiFi (for board that provides CMSIS_WiFi)
   #      - Socket-Layer: $SolutionDir()$/Socket/WiFi/Socket.clayer.yml
