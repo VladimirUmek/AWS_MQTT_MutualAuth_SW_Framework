@@ -30,8 +30,11 @@ solution:
 
   ## Select appropriate socket (and shield) layer and then the board layer will be loaded automatically.
 
-  ## Socket Layer using CMSIS-Driver Ethernet (for board that provides CMSIS_ETH)
+  ## Socket Layer using FreeRTOS+TCP with CMSIS-Driver Ethernet (for board that provides CMSIS_ETH)
   #      - Socket-Layer: $SolutionDir()$/Socket/FreeRTOS+TCP/Socket.clayer.yml
+
+  ## Socket Layer using MDK-Middleware Network with CMSIS-Driver Ethernet (for board that provides CMSIS_ETH)
+  #      - Socket-Layer: $SolutionDir()$/Socket/MDK_Netork/Socket.clayer.yml
 
   ## Socket Layer using CMSIS-Driver WiFi (for board that provides CMSIS_WiFi)
   #      - Socket-Layer: $SolutionDir()$/Socket/WiFi/Socket.clayer.yml
