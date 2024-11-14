@@ -13,13 +13,13 @@ layer:
         - CMSIS_WiFi
 
   packs:
-    - pack: ARM::CMSIS-Driver@2.7.2
+    - pack: ARM::CMSIS-Driver@^2.7.2
 
   define:
     - CMSIS_shield_header: "\"Inventek_ISMART43362.h\""
 
   components:
-    - component: Keil::CMSIS Driver:WiFi:ISM43362&SPI
+    - component: CMSIS Driver:WiFi:ISM43362&SPI
 
   groups:
     - group: shield

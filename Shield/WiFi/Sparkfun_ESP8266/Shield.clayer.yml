@@ -11,13 +11,13 @@ layer:
         - CMSIS_WiFi
 
   packs:
-    - pack: ARM::CMSIS-Driver@2.7.2
+    - pack: ARM::CMSIS-Driver@^2.7.2
 
   define:
     - CMSIS_shield_header: "\"Sparkfun_ESP8266.h\""
 
   components:
-    - component: Keil::CMSIS Driver:WiFi:ESP8266&UART
+    - component: CMSIS Driver:WiFi:ESP8266&UART
 
   groups:
     - group: Shield
