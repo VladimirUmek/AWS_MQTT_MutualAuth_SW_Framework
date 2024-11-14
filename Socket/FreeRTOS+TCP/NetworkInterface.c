@@ -1,5 +1,5 @@
 /* -----------------------------------------------------------------------------
- * Copyright (c) 2021 Arm Limited (or its affiliates). All rights reserved.
+ * Copyright (c) 2021-2024 Arm Limited (or its affiliates). All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -69,7 +69,7 @@ void ETH_MAC_SignalEvent (uint32_t event) {
 }
 
 /**
-  Thread that processes incomming frames
+  Thread that processes incoming frames
 */
 static void ETH_Thread (void *arg) {
   ARM_ETH_LINK_STATE link_state;
@@ -89,7 +89,7 @@ static void ETH_Thread (void *arg) {
     link_state = Driver_ETH_PHY->GetLinkState();
 
     if (link_state == ARM_ETH_LINK_UP) {
-      /* Get Ethernet PHY devce link info */
+      /* Get Ethernet PHY device link info */
       link_info = Driver_ETH_PHY->GetLinkInfo();
       
       if (link_info.duplex == 0U) {

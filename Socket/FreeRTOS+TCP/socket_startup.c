@@ -21,7 +21,6 @@
 
 #include "FreeRTOS_IP.h"
 #include "NetworkInterfaceConfig.h"
-#include "iot_demo_logging.h"
 
 /* IP address (used when DHCP fails or if ipconfigUSE_DHCP is 0) */
 static const uint8_t NetIPaddr[4] = {
@@ -65,10 +64,10 @@ int32_t socket_startup (void) {
 
   /* Initialize network stack */
   if (FreeRTOS_IPInit (NetIPaddr, NetMask, NetGateway, NetDNSserver, EthMAC) != pdPASS) {
-    IotLogError ("Network interface initialization failed.\r\n");
+    printf("Network interface initialization failed.\r\n");
   }
   else {
-    IotLogInfo ("Waiting for network connection... ");
+    printf("Waiting for network connection...\r\n");
 
     /* Wait until network is up or timeout expires */
     for (tout = 30000U; tout; tout -= 200U) {
@@ -80,11 +79,11 @@ int32_t socket_startup (void) {
 
   if (NetUp == 0U) {
     /* Network is down */
-    IotLogError ("Network is down!\r\n");
+    printf("Network is down!\r\n");
     rval = 1;
   } else {
     /* Network is up */
-    IotLogInfo ("Network is up!\r\n");
+    printf("Network is up!\r\n");
     rval = 0;
   }
 

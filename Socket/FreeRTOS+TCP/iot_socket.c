@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2022 Arm Limited. All rights reserved.
+/* -----------------------------------------------------------------------------
+ * Copyright (c) 2022-2024 Arm Limited (or its affiliates). All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -14,11 +14,10 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ * -------------------------------------------------------------------------- */
 
 #include "iot_socket.h"
 
-#include "FreeRTOS.h"
 #include "FreeRTOS_IP.h"
 #include "FreeRTOS_Sockets.h"
 
@@ -73,7 +72,7 @@ int32_t iotSocketBind (int32_t socket, const uint8_t *ip, uint32_t ip_len, uint1
   pxAddress.sin_addr = FreeRTOS_inet_addr_quick (ip[0], ip[1], ip[2], ip[3]);
   pxAddress.sin_port = FreeRTOS_htons (port);
 
-  rval = FreeRTOS_bind (xSocket, &pxAddress, sizeof(&pxAddress));
+  rval = FreeRTOS_bind (xSocket, &pxAddress, sizeof(struct freertos_sockaddr));
 
   if (rval == 0) {
     /* Socket bound */
@@ -100,7 +99,7 @@ int32_t iotSocketListen (int32_t socket, int32_t backlog) {
   rval = FreeRTOS_listen (xSocket, (BaseType_t)backlog);
 
   if (rval == 0) {
-    /* Socket is in listaning state */
+    /* Socket is in listening state */
     stat = 0U;
   }
   else if (rval == -pdFREERTOS_ERRNO_EOPNOTSUPP) {
@@ -125,7 +124,7 @@ int32_t iotSocketAccept (int32_t socket, uint8_t *ip, uint32_t *ip_len, uint16_t
   xAccept = FreeRTOS_accept (xSocket, &xAddress, &xAddressLength);
 
   if (xAccept == NULL) {
-    /* Timeout occured before remote connection was accepted */
+    /* Timeout occurred before remote connection was accepted */
     sock = IOT_SOCKET_EAGAIN;
   }
   else if (xAccept == FREERTOS_INVALID_SOCKET) {
@@ -262,6 +261,7 @@ int32_t iotSocketRecvFrom (int32_t socket, void *buf, uint32_t len, uint8_t *ip,
   socklen_t xAddressLength;
   BaseType_t rval;
   int32_t stat;
+  int32_t sin_addr_sz;
 
   if (len == 0U) {
     /* Check if socket is readable */
@@ -285,7 +285,7 @@ int32_t iotSocketRecvFrom (int32_t socket, void *buf, uint32_t len, uint8_t *ip,
     xAddressLength = sizeof(struct freertos_sockaddr);
 
     rval = FreeRTOS_recvfrom (xSocket, buf, len, 0U, &xAddress, &xAddressLength);
-    
+
     if (rval == -pdFREERTOS_ERRNO_EWOULDBLOCK) {
       /* No bytes received, block time expired */
       stat = IOT_SOCKET_EAGAIN;
@@ -301,6 +301,21 @@ int32_t iotSocketRecvFrom (int32_t socket, void *buf, uint32_t len, uint8_t *ip,
     else {
       /* Number of bytes received */
       stat = (int32_t)rval;
+
+      if ((ip != NULL) && (ip_len != NULL)) {
+        /* Copy remote IP address */
+        sin_addr_sz = sizeof(xAddress.sin_addr);
+
+        if (*ip_len >= sin_addr_sz) {
+          memcpy (ip, &xAddress.sin_addr, sin_addr_sz);
+          *ip_len = sin_addr_sz;
+        }
+      }
+
+      if (port != NULL) {
+        /* Copy remote port */
+        *port = FreeRTOS_htons (xAddress.sin_port);
+      }
     }
   }
 
@@ -412,7 +427,7 @@ int32_t iotSocketGetSockName (int32_t socket, uint8_t *ip, uint32_t *ip_len, uin
     memcpy (ip, &xAddress.sin_addr, sizeof(xAddress.sin_addr));
   }
 
-  if (*port != NULL) {
+  if (port != NULL) {
     *port = FreeRTOS_ntohs (xAddress.sin_port);
   }
 
@@ -444,7 +459,7 @@ int32_t iotSocketGetPeerName (int32_t socket, uint8_t *ip, uint32_t *ip_len, uin
       memcpy (ip, &xAddress.sin_addr, sizeof(xAddress.sin_addr));
     }
 
-    if (*port != NULL) {
+    if (port != NULL) {
       *port = FreeRTOS_ntohs (xAddress.sin_port);
     }
   }
@@ -471,7 +486,7 @@ int32_t iotSocketGetOpt (int32_t socket, int32_t opt_id, void *opt_val, uint32_t
     stat = IOT_SOCKET_ENOTSUP;
   }
   else if (opt_id == IOT_SOCKET_SO_TYPE) {
-    /* Missuse issocketconnected do determine if this is TCP or UDP socket */
+    /* Misuse issocketconnected to determine if this is TCP or UDP socket */
     rval = FreeRTOS_issocketconnected (xSocket);
 
     if (rval == -pdFREERTOS_ERRNO_EINVAL) {
