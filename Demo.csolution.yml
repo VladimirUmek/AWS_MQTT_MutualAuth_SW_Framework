@@ -21,6 +21,13 @@ solution:
       optimize: balanced
 
   target-types:
+    - type: AVH
+      board: ARM::V2M-MPS3-SSE-300-FVP
+      variables:
+        - Board-Layer: Board/AVH_MPS3_Corstone-300/Board.clayer.yml
+        - Shield-Layer: ""
+      #   - Socket-Layer: ""
+
     - type: MyBoard
       # board: <board name>
       # variables:
