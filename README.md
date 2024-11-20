@@ -15,26 +15,14 @@ Target Types
 --------
 Application requires setting of following layers defined by the variables:
   - Board-Layer
-  - Socket-Layer
   - Shield-Layer (optional)
+  - Socket-Layer
 
 To set the board layer (i.e. to specify the "Board-Layer") one shall first install the BSP or DFP for the board in use. To list the name of the available boards use the command
 ```
 csolution list boards
 ```
 This command will also list the respective pack name and version. To continue, follow the instruction on [how to configure the Reference Application](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/ReferenceApplications.md#usage).
-
-To set the socket layer (i.e. to specify the "Socket-Layer") one shall list the available socket layers by using command
-```
-csolution list layers Demo.csolution.yml --clayer-path ./Socket
-```
-This command will list the socket layer compatible with the board layer specified in a previous step. Listed path shall be used to specify the "Socket-Layer" variable.
-
-To set the optional shield layer (i.e. to specify the "Shield-Layer") one shall list the available shield layers by using command
-```
-csolution list layers Demo.csolution.yml --clayer-path ./Shield
-```
-This command will list the shield layer compatible with the board layer specified in a previous step. Listed path shall be used to specify the "Shield-Layer" variable.
 
 Configure
 ---------

@@ -9,8 +9,8 @@ solution:
 
   compiler: AC6
 
-  #packs:
-  #  - pack: <vendor>::<pack>@<version>
+  # packs:
+  #   - pack: <vendor>::<pack>@<version>
 
   build-types:
     - type: Debug
@@ -22,37 +22,11 @@ solution:
 
   target-types:
     - type: MyBoard
-  #    board: <board name>
-  #    variables:
-  #      - Board-Layer: ""
-  #      - Socket-Layer: ""
-  #      - Shield-Layer: ""
-
-  ## Select appropriate socket (and shield) layer and then the board layer will be loaded automatically.
-
-  ## Socket Layer using FreeRTOS+TCP with CMSIS-Driver Ethernet (for board that provides CMSIS_ETH)
-  #      - Socket-Layer: $SolutionDir()$/Socket/FreeRTOS+TCP/Socket.clayer.yml
-
-  ## Socket Layer using MDK-Middleware Network with CMSIS-Driver Ethernet (for board that provides CMSIS_ETH)
-  #      - Socket-Layer: $SolutionDir()$/Socket/MDK_Network/Socket.clayer.yml
-
-  ## Socket Layer using CMSIS-Driver WiFi (for board that provides CMSIS_WiFi)
-  #      - Socket-Layer: $SolutionDir()$/Socket/WiFi/Socket.clayer.yml
-
-  ## Socket Layer using Virtual Socket on AVH (for board that provides "VSocket")
-  #      - Socket-Layer: $SolutionDir()$/Socket/VSocket/Socket.clayer.yml
-
-  ## Shield layer using Inventek ISMART43362 WiFi module
-  #      - Shield-Layer: $SolutionDir()$/Shield/WiFi/Inventek_ISMART43362-E/Shield.clayer.yml
-
-  ## Shield layer using Sparkfun DA16200 WiFi module
-  #      - Shield-Layer: $SolutionDir()$/Shield/WiFi/Sparkfun_DA16200/Shield.clayer.yml
-
-  ## Shield layer using Sparkfun ESP8266 WiFi module
-  #      - Shield-Layer: $SolutionDir()$/Shield/WiFi/Sparkfun_ESP8266/Shield.clayer.yml
-
-  ## Shield layer using WizNet WizFi360 WiFi module
-  #      - Shield-Layer: $SolutionDir()$/Shield/WiFi/WizNet_WizFi360-EVB/Shield.clayer.yml
+      # board: <board name>
+      # variables:
+      #   - Board-Layer: ""
+      #   - Shield-Layer: ""
+      #   - Socket-Layer: ""
 
   projects:
     - project: ./Demo.cproject.yml
