@@ -82,8 +82,8 @@
 
 //  <o>Preemption interrupt priority
 //  <i> Maximum priority of interrupts that are safe to call FreeRTOS API.
-//  <i> Default: 16
-#define configMAX_SYSCALL_INTERRUPT_PRIORITY      16
+//  <i> Default: 128
+#define configMAX_SYSCALL_INTERRUPT_PRIORITY      128
 
 //  <q>Use time slicing
 //  <i> Enable setting to use timeslicing.
